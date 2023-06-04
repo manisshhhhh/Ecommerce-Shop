@@ -1,6 +1,6 @@
 const products = [
     {
-        _id: '1',
+
         name: 'Iphone 14 pro',
         image: '/images/phone.jpg',
         description: 'Description for Product 5',
@@ -13,7 +13,7 @@ const products = [
     },
 
     {
-        _id: '2',
+
         name: 'Cannon EOS',
         image: '/images/camera.jpg',
         description: 'Description for Product 3',
@@ -25,7 +25,7 @@ const products = [
         numReviews: 12
     },
     {
-        _id: '3',
+
         name: 'G-3 Gaming Mouse',
         image: '/images/mouse.jpg',
         description: 'Description for Product 4',
@@ -37,7 +37,7 @@ const products = [
         numReviews: 7
     },
     {
-        _id: '4',
+
         name: 'Sony theator 4 pro',
         image: '/images/sound.jpg',
         description: 'Description for Product 5',
@@ -50,7 +50,7 @@ const products = [
     },
 
     {
-        _id: '5',
+
         name: 'Sony platstaions 4 pro',
         image: '/images/playstation.jpg',
         description: 'Description for Product 5',
@@ -62,7 +62,7 @@ const products = [
         numReviews: 15
     },
     {
-        _id: '6',
+
         name: 'Dell vostro 3401',
         image: '/images/leptop.jpg',
         description: 'Description for Product 5',
@@ -75,7 +75,7 @@ const products = [
     },
 
     {
-        _id: '7',
+
         name: ' wireless Headphones',
         image: '/images/airpods.jpg',
         description: 'Description for Product 1',
@@ -87,7 +87,7 @@ const products = [
         numReviews: 10
     },
     {
-        _id: '8',
+
         name: 'Echo Dot 3rd Gen',
         image: '/images/alexa.jpg',
         description: 'Description for Product 2',
@@ -99,7 +99,7 @@ const products = [
         numReviews: 5
     },
     {
-        _id: '9',
+
         name: 'Sony headphone 4 pro',
         image: '/images/headphone.jpg',
         description: 'Description for Product 5',
@@ -112,7 +112,7 @@ const products = [
     },
 
     {
-        _id: '10',
+
         name: 'Sony headphone 4 pro',
         image: '/images/headphone.jpg',
         description: 'Description for Product 5',
