@@ -1,15 +1,12 @@
-import { PRODUCTS_URL, UPLOAD_URL } from "../constants";
-import { apiSlice } from "./apiSlice";
+import { PRODUCTS_URL } from '../constants';
+import { apiSlice } from './apiSlice';
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: ({ keyword, pageNumber }) => ({
                 url: PRODUCTS_URL,
-                params: {
-                    keyword,
-                    pageNumber,
-                },
+                params: { keyword, pageNumber },
             }),
             keepUnusedDataFor: 5,
             providesTags: ['Products'],
@@ -18,11 +15,11 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             query: (productId) => ({
                 url: `${PRODUCTS_URL}/${productId}`,
             }),
-            keepUnusedDataFor: 5
+            keepUnusedDataFor: 5,
         }),
         createProduct: builder.mutation({
             query: () => ({
-                url: PRODUCTS_URL,
+                url: `${PRODUCTS_URL}`,
                 method: 'POST',
             }),
             invalidatesTags: ['Product'],
@@ -37,16 +34,17 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         }),
         uploadProductImage: builder.mutation({
             query: (data) => ({
-                url: `${UPLOAD_URL}`,
+                url: `/api/upload`,
                 method: 'POST',
                 body: data,
-            })
+            }),
         }),
         deleteProduct: builder.mutation({
             query: (productId) => ({
                 url: `${PRODUCTS_URL}/${productId}`,
-                method: 'DELETE'
-            })
+                method: 'DELETE',
+            }),
+            providesTags: ['Product'],
         }),
         createReview: builder.mutation({
             query: (data) => ({
@@ -57,15 +55,14 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Product'],
         }),
         getTopProducts: builder.query({
-            query: () => ({
-                url: `${PRODUCTS_URL}/top`,
-            }),
+            query: () => `${PRODUCTS_URL}/top`,
             keepUnusedDataFor: 5,
-        })
+        }),
     }),
-})
+});
 
-export const { useGetProductsQuery,
+export const {
+    useGetProductsQuery,
     useGetProductDetailsQuery,
     useCreateProductMutation,
     useUpdateProductMutation,

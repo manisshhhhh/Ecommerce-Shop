@@ -1,41 +1,45 @@
 import asyncHandler from '../middleware/asyncHandler.js';
-import Product from '../models/productModel.js'
+import Product from '../models/productModel.js';
 
-//@decs Fetch all Products
-//@route GET /api/products
-//@accecc Public
+// @desc    Fetch all products
+// @route   GET /api/products
+// @access  Public
 const getProducts = asyncHandler(async (req, res) => {
     const pageSize = process.env.PAGINATION_LIMIT;
     const page = Number(req.query.pageNumber) || 1;
 
-    const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
+    const keyword = req.query.keyword
+        ? {
+            name: {
+                $regex: req.query.keyword,
+                $options: 'i',
+            },
+        }
+        : {};
 
     const count = await Product.countDocuments({ ...keyword });
-
     const products = await Product.find({ ...keyword })
         .limit(pageSize)
         .skip(pageSize * (page - 1));
 
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
-})
-
-//@decs Fetch a Product
-//@route GET /api/products/:id
-//@accecc Public
-const getProductById = asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
-
-    if (product) {
-        return res.json(product);
-    } else {
-        res.status(404);
-        throw new Error('Resource not found');
-    }
 });
 
-//@decs Create a Product
-//@route POST /api/products
-//@accecc Private/Admin
+// @desc    Fetch single product
+// @route   GET /api/products/:id
+// @access  Public
+const getProductById = asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+        return res.json(product);
+    }
+    res.status(404);
+    throw new Error('Resource not found');
+});
+
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
     const product = new Product({
         name: 'Sample name',
@@ -47,17 +51,18 @@ const createProduct = asyncHandler(async (req, res) => {
         countInStock: 0,
         numReviews: 0,
         description: 'Sample description',
-    })
+    });
 
-    const createProduct = await product.save();
-    res.status(201).json(createProduct);
-})
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
+});
 
-//@decs Update a product
-//@route PUT /api/products/:id
-//@accecc Private/Admin
+// @desc    Update a product
+// @route   PUT /api/products/:id
+// @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, image, brand, category, countInStock } = req.body;
+    const { name, price, description, image, brand, category, countInStock } =
+        req.body;
 
     const product = await Product.findById(req.params.id);
 
@@ -73,30 +78,29 @@ const updateProduct = asyncHandler(async (req, res) => {
         const updatedProduct = await product.save();
         res.json(updatedProduct);
     } else {
-        res.staus(404);
-        throw new Error('Resource not found');
+        res.status(404);
+        throw new Error('Product not found');
     }
-})
+});
 
-//@decs Delete a Product
-//@route DELETE /api/products/:id
-//@accecc Private/Admin
+// @desc    Delete a product
+// @route   DELETE /api/products/:id
+// @access  Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
-
     const product = await Product.findById(req.params.id);
 
     if (product) {
         await Product.deleteOne({ _id: product._id });
-        res.status(200).json({ message: 'Product deleted' });
+        res.json({ message: 'Product removed' });
     } else {
-        res.staus(404);
-        throw new Error('Resource not found');
+        res.status(404);
+        throw new Error('Product not found');
     }
-})
+});
 
-//@decs Create a new review
-//@route POST /api/products/:id/reviews
-//@accecc Private
+// @desc    Create new review
+// @route   POST /api/products/:id/reviews
+// @access  Private
 const createProductReview = asyncHandler(async (req, res) => {
     const { rating, comment } = req.body;
 
@@ -104,7 +108,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 
     if (product) {
         const alreadyReviewed = product.reviews.find(
-            (review) => review.user.toString() === req.user._id.toString()
+            (r) => r.user.toString() === req.user._id.toString()
         );
 
         if (alreadyReviewed) {
@@ -123,33 +127,33 @@ const createProductReview = asyncHandler(async (req, res) => {
 
         product.numReviews = product.reviews.length;
 
-        product.rating = product.reviews.reduce((acc, review) => acc + review.rating, 0) /
+        product.rating =
+            product.reviews.reduce((acc, item) => item.rating + acc, 0) /
             product.reviews.length;
 
         await product.save();
         res.status(201).json({ message: 'Review added' });
-
     } else {
-        res.staus(404);
-        throw new Error('Resource not found');
+        res.status(404);
+        throw new Error('Product not found');
     }
-})
+});
 
-//@decs Get top rated products
-//@route GET /api/products/top
-//@accecc Public
+// @desc    Get top rated products
+// @route   GET /api/products/top
+// @access  Public
 const getTopProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({}).sort({ rating: -1 }).limit(3);
 
-    res.status(200).json(products);
+    res.json(products);
 });
 
 export {
-    getProductById,
     getProducts,
+    getProductById,
     createProduct,
     updateProduct,
     deleteProduct,
     createProductReview,
-    getTopProducts
+    getTopProducts,
 };

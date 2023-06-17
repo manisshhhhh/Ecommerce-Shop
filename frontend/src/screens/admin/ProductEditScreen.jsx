@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
-  useUploadProductImageMutation
+  useUploadProductImageMutation,
 } from '../../slices/productsApiSlice';
 
 const ProductEditScreen = () => {
@@ -32,7 +32,8 @@ const ProductEditScreen = () => {
   const [updateProduct, { isLoading: loadingUpdate }] =
     useUpdateProductMutation();
 
-  const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
+  const [uploadProductImage, { isLoading: loadingUpload }] =
+    useUploadProductImageMutation();
 
   const navigate = useNavigate();
 
@@ -79,9 +80,8 @@ const ProductEditScreen = () => {
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
-  }
+  };
 
-  
   return (
     <>
       <Link to='/admin/productlist' className='btn btn-light my-3'>
@@ -116,18 +116,21 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-                <Form.Group controlId='image' className='my-2'>
-                  <Form.Label>Image</Form.Label>
-                  <Form.Control type='text' placeholder='Enter image url'
-                    value={image} onChange={(e) => setImage}></Form.Control>
-                  <Form.Control type='file' label='Choose file'
-                  onChange={uploadFileHandler}>
-                  </Form.Control>
-                  
-                  
-                </Form.Group>
-                {loadingUpload && <Loader/>}
-                
+            <Form.Group controlId='image'>
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter image url'
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Control
+                label='Choose File'
+                onChange={uploadFileHandler}
+                type='file'
+              ></Form.Control>
+              {loadingUpload && <Loader />}
+            </Form.Group>
 
             <Form.Group controlId='brand'>
               <Form.Label>Brand</Form.Label>
