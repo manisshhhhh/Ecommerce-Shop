@@ -1,6 +1,6 @@
 main {
   min-height: 80vh;
-  background-color:lightgray;
+  background-color: lightgray;
 }
 
 .rating span {
@@ -50,6 +50,6 @@ table th {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(246, 245, 247, 0.039);
-  color: rgb(3, 9, 20);
+  background: rgba(0, 0, 0, 0.34);
+  color: rgb(238, 240, 244);
 }
